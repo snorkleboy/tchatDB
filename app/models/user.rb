@@ -33,6 +33,14 @@ class User < ApplicationRecord
     def logout
         reset_session_token
     end
+    def myToken?(token)
+        token != nil && token == self.session_token 
+    end
+
+    def self.checkToken(username,token)
+        user = User.find_by(username:username)
+        user && user.session_token != nil && user.session_token == token
+    end
 
     private
     def generate_session_token

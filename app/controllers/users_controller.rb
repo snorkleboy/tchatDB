@@ -30,4 +30,13 @@ class UsersController < ApplicationController
       render json:{'error'=>newUser.errors.full_messages},status: 400
     end
   end
+
+  def isuser
+    user = User.find_by(username: params[:username])
+    if (user)
+      render json:{'isuser'=>true}
+    else
+      render json:{'isuser'=>false}
+    end
+  end
 end
