@@ -19,9 +19,10 @@ class User < ApplicationRecord
         end
         nil
     end
-    def authenticate(password)
-        if (BCrypt::Password.new(self.password_digest).is_password?(password))
-            return login
+    def self.authenticate(username,password)
+        user = User.find_by_cred(username,password)
+        if (user)
+            return user.login
         else
             return false
         end

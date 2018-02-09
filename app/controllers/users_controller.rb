@@ -1,15 +1,16 @@
 class UsersController < ApplicationController
   def create
-    newUser = User.new(:username=>params[:username])
+    newUser = User.new(:username=>params[:username],:password=>params[:password])
     if (newUser.save)
-      render json:{'users'=>[newUser]}
+      token = newUser.login()
+      render json:{'token'=>token}
     else
-      render json:{'error'=>newUser.errors.full_messages}
+      render json:{'error'=>[newUser.errors.full_messages]},status: 400
     end
   end
 
   def index
-    render json:{'users'=>User.all}
+    render json:{'users'=>User.all.map{|user| [user.id,user.username]}}
   end
 
   def show
@@ -17,7 +18,7 @@ class UsersController < ApplicationController
     if (user)
       render json:{"#{id}"=>user}
     else
-      render json:{"error"=>"couldnt find that user"}
+      render json:{"error"=>"couldnt find that user"},status: 400
     end
   end
 
@@ -26,7 +27,7 @@ class UsersController < ApplicationController
     if (user && user.destroy)
       render json:{"#{id}"=>user}
     else
-      render json:{'error'=>newUser.errors.full_messages}
+      render json:{'error'=>newUser.errors.full_messages},status: 400
     end
   end
 end
