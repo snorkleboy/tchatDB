@@ -1,17 +1,32 @@
 class UsersController < ApplicationController
   def create
-    newUser = User.create(:username=>params[:username])
-    render json:{"hello"=>"world", "params"=>params, 'user'=>newUser}
+    newUser = User.new(:username=>params[:username])
+    if (newUser.save)
+      render json:{'users'=>[newUser]}
+    else
+      render json:{'error'=>newUser.errors.full_messages}
+    end
   end
 
   def index
-    render json:{"hello"=>"world", "users"=>User.all}
+    render json:{'users'=>User.all}
   end
 
   def show
-    render json:{"hello"=>"world", "params"=>User.find(params['id'])}
+    user = User.find(params['id'])
+    if (user)
+      render json:{"#{id}"=>user}
+    else
+      render json:{"error"=>"couldnt find that user"}
+    end
   end
 
   def destroy
+    user = User.find(params['id'])
+    if (user && user.destroy)
+      render json:{"#{id}"=>user}
+    else
+      render json:{'error'=>newUser.errors.full_messages}
+    end
   end
 end
