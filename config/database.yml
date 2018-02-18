@@ -78,8 +78,21 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
+#psql --host=tchatdb.cdfx37elerz3.us-east-2.rds.amazonaws.com --port=5432 --username=snorkleboy --password --dbname=tchat
 production:
   <<: *default
-  database: tchatDB_production
-  username: tchatDB
-  password: <%= ENV['TCHATDB_DATABASE_PASSWORD'] %>
+  database: tchat
+  username: snorkleboy
+  password: erickim7728
+  host: tchatdb.cdfx37elerz3.us-east-2.rds.amazonaws.com
+  port: 5432
+
+
+
+  #   database: <%= ENV['RDS_DB_NAME'] %>
+  # username: <%= ENV['RDS_USERNAME'] %>
+  # password: <%= ENV['RDS_PASSWORD'] %>
+  # host: <%= ENV['RDS_HOSTNAME'] %>
+  # port: <%= ENV['RDS_PORT'] %>
+
+
