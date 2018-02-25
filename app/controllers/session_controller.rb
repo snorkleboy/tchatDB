@@ -1,10 +1,16 @@
 class SessionController < ApplicationController
   def login
     p request.headers["authentication"]
-    token = User.authenticate(params[:username],params[:password])
-    p token
+    token = ''
+    if (params[:username] == 'guest')
+      name = "guest#{User.last.id}#{Time.now.nsec.to_s.slice(12,14)}"
+      newGuest = User.create(username:name,password: params[:password])
+      token = User.authenticate(name,params[:password])
+    else
+      token = User.authenticate(params[:username],params[:password])
+    end
     if (token)
-      render json:{'token'=>token}
+      render json:{'token'=>token, 'username'=>name}
     else
       render json:{"error"=>"wrong password"},status: 401
     end
@@ -24,5 +30,9 @@ class SessionController < ApplicationController
     else
       render json:{'error'=>'wrong token'},status:401
     end
+  end
+
+  def sessionParams
+
   end
 end
