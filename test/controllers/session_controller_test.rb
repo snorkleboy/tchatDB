@@ -1,14 +1,13 @@
 require 'test_helper'
 
 class SessionControllerTest < ActionDispatch::IntegrationTest
-  test "should get login" do
+  test 'should get login' do
     get session_login_url
     assert_response :success
   end
 
-  test "should get logout" do
+  test 'should get logout' do
     get session_logout_url
     assert_response :success
   end
-
 end
